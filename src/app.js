@@ -69,6 +69,42 @@ app.get("/students/:id", async (req, res) => {
   }
 });
 
+app.patch("/students/:id",async (req,res)=>{
+try{
+const _id= req.params.id;
+//lagech karila do new:true
+const PDB = await Student.findByIdAndUpdate(_id, req.body,{
+  new:true
+});
+if(!PDB){
+
+  return res.status(404).send(`DB is not present`);
+}else{
+  res.send(PDB);
+}
+}catch(e){
+res.status(404).send(e);
+}
+})
+
+//delete by id
+app.delete("/students/:id",async (req,res)=>{
+  try{
+    const _id=req.params.id;
+    const D_DB=await Student.findByIdAndDelete(_id);
+    if(!_id){
+      return res.status(404).send("we acnt delete");
+    }else{
+
+      res.send(D_DB+"delete successfull");
+    }
+  }catch(e){
+    res.status(404).send(e);
+
+  }
+})
+
+
 app.listen(port, () => {
   console.log(`connection is setup ${port}`);
 });
